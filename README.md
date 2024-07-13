@@ -1,23 +1,26 @@
-# ERPNext-installation-Guide
-## The complete guide to install ERPNext in your Ubuntu system 22.04.31
+
+
+# ERPNext installation Guide
+## The complete guide to install ERPNext (15) in your Ubuntu system 22.04.31
 
 ### Pre-requisites 
 
-      Python 3.11+
-      Node.js 20+
-      Redis 5                                       (caching and real time updates)
-      MariaDB 10.3.x / Postgres 9.5.x               (to run database driven apps)
-      yarn 1.12+                                    (js dependency manager)
-      pip 20+                                       (py dependency manager)
-      wkhtmltopdf (version 0.12.5 with patched qt)  (for pdf generation)
-      cron                                          (bench's scheduled jobs: automated certificate renewal, scheduled backups)
-      NGINX                                         (proxying multitenant sites in production)
+      Python 3.11.x
+      Node.js 20.x
+      Redis 7.0.x                                  (caching and real time updates)
+      MariaDB 10.6.x 
+      Postgres 15.2.x                              (to run database driven apps)
+      yarn 1.22.x                                  (js dependency manager)
+      pip 23.0.x                                   (py dependency manager)
+      wkhtmltopdf 0.12.x                           (for pdf generation)
+      cron                                         (bench's scheduled jobs: automated certificate renewal, scheduled backups)
+      nginx 1.23.x                                 (proxying multitenant sites in production)
 
 ### STEP 0 Create a bench user called (frappe)
-sudo adduser frappe
-usermod -aG sudo frappe
-su frappe 
-cd /home/frappe
+      sudo adduser frappe
+      usermod -aG sudo frappe
+      su frappe 
+      cd /home/frappe
 
 ### STEP 1 Install git
 Git is the most commonly used version control system. Git tracks the changes you make to files, 
@@ -51,16 +54,8 @@ It's designed to allow you to work on multiple projects with different dependenc
 at the same time on the same machine.
     
     sudo apt-get install virtualenv
-    
-  CHECK PYTHON VERSION 
   
-    python3 -V
-  
-  IF VERSION IS 3.10.X RUN
-  
-    sudo apt install python3.10-venv
-
-  IF VERSION IS 3.11.X RUN
+  Python VERSION IS 3.11.X RUN
   
      sudo apt install python3.11-venv
 
@@ -68,8 +63,8 @@ at the same time on the same machine.
 MariaDB is developed as open source software and as a relational database it provides an SQL interface 
 for accessing data.
 
-   sudo apt install mariadb-server mariadb-client
-   sudo apt update
+      sudo apt install mariadb-server mariadb-client
+      sudo apt update
        
 IMPORTANT :During this installation you'll be prompted to set the MySQL root password.
 If you are not prompted for the same You can initialize the MySQL server setup by executing 
@@ -83,14 +78,14 @@ the following command
 
     When you run the above command, the server will show the following prompts.
 
-Enter current password for root: (Enter blank if its first time installation)
-Switch to unix_socket authentication [Y/n]: Y
-Change the root password? [Y/n]: Y
-It will ask you to set new MySQL root password at this step. This can be different from the SSH root user password.
-Remove anonymous users? [Y/n] Y
-Disallow root login remotely? [Y/n]: N
-Remove test database and access to it? [Y/n]: Y
-Reload privilege tables now? [Y/n]: Y
+                  Enter current password for root: (Enter blank if its first time installation)
+                  Switch to unix_socket authentication [Y/n]: Y
+                  Change the root password? [Y/n]: Y
+                  It will ask you to set new MySQL root password at this step. This can be different from the SSH root user password.
+                  Remove anonymous users? [Y/n] Y
+                  Disallow root login remotely? [Y/n]: N
+                  Remove test database and access to it? [Y/n]: Y
+                  Reload privilege tables now? [Y/n]: Y
 
 ### STEP 7 Edit the mariadb configuration ( unicode character encoding )
 
@@ -159,9 +154,7 @@ before next step and You must login.
 ### STEP 13 initilise the frappe bench & install frappe latest version 
 
     bench init frappe-bench --frappe-branch version-15
-    
     cd frappe-bench
-    
     bench start
     
 ### STEP 14 create a site in frappe bench 
@@ -172,104 +165,100 @@ before next step and You must login.
 
     bench get-app erpnext --branch version-15
     
-    ###OR
+  ###OR
     
     bench get-app https://github.com/frappe/erpnext --branch version-15
 
 ### Begin to install the software you want on your deploy
 
-    bench --site site1.local install-app erpnext 
+      bench --site site1.local install-app erpnext 
+       
+      bench get-app hrms --resolve-deps
+      bench --site site1.local install-app hrms 
+      
+      bench get-app payments --resolve-deps
+      bench --site site1.local install-app payments
+      
+      bench get-app lending --resolve-deps
+      bench --site site1.local install-app lending 
+      
+      bench get-app builder --resolve-deps
+      bench --site site1.local install-app builder
+      
+      bench get-app print_designer --resolve-deps
+      bench --site site1.local install-app print_designer
+      
+      bench get-app lms --resolve-deps
+      bench --site site1.local install-app lms
+      
+      bench get-app gameplan --resolve-deps
+      bench --site site1.local install-app gameplan
+      
+      bench get-app webshop --resolve-deps
+      bench --site site1.local install-app webshop
+      
+      bench get-app crm --resolve-deps
+      bench --site site1.local install-app crm
+      
+      bench get-app insights --resolve-deps
+      bench --site site1.local install-app insights
+      
+      bench get-app ecommerce_integrations --resolve-deps
+      bench --site site1.local install-app ecommerce_integrations
+      
+      bench get-app helpdesk --resolve-deps
+      bench --site site1.local install-app helpdesk
+      
+      bench get-app wiki --resolve-deps
+      bench --site site1.local install-app wiki
+      
+      bench get-app erpnext-shipping --resolve-deps
+      bench --site site1.local install-app erpnext_shipping
+      
+      bench get-app erpnext_price_estimation --resolve-deps
+      bench --site site1.local install-app erpnext_price_estimation
+      
+      bench get-app exotel_integration --resolve-deps
+      bench --site site1.local install-app exotel_integration
+      
+      bench get-app waba_integration --resolve-deps
+      bench --site site1.local install-app waba_integration
+      
+      bench get-app library_management --resolve-deps
+      bench --site site1.local install-app library_management
+      
+      bench get-app healthcare --resolve-deps
+      bench --site site1.local install-app healthcare
+      
+      bench get-app agriculture --resolve-deps
+      bench --site site1.local install-app agriculture
+      
+      bench get-app hospitality --resolve-deps
+      bench --site site1.local install-app hospitality
+      
+      bench get-app india-compliance --resolve-deps
+      bench --site site1.local install-app india_compliance
     
-   
-bench get-app hrms --resolve-deps
-bench --site site1.local install-app hrms 
-
-bench get-app payments --resolve-deps
-bench --site site1.local install-app payments
-
-bench get-app lending --resolve-deps
-bench --site site1.local install-app lending 
-
-bench get-app builder --resolve-deps
-bench --site site1.local install-app builder
-
-bench get-app print_designer --resolve-deps
-bench --site site1.local install-app print_designer
-
-bench get-app lms --resolve-deps
-bench --site site1.local install-app lms
-
-bench get-app gameplan --resolve-deps
-bench --site site1.local install-app gameplan
-
-bench get-app webshop --resolve-deps
-bench --site site1.local install-app webshop
-
-bench get-app crm --resolve-deps
-bench --site site1.local install-app crm
-
-bench get-app insights --resolve-deps
-bench --site site1.local install-app insights
-
-bench get-app ecommerce_integrations --resolve-deps
-bench --site site1.local install-app ecommerce_integrations
-
-bench get-app helpdesk --resolve-deps
-bench --site site1.local install-app helpdesk
-
-bench get-app wiki --resolve-deps
-bench --site site1.local install-app wiki
-
-bench get-app erpnext-shipping --resolve-deps
-bench --site site1.local install-app erpnext_shipping
-
-bench get-app erpnext_price_estimation --resolve-deps
-bench --site site1.local install-app erpnext_price_estimation
-
-bench get-app exotel_integration --resolve-deps
-bench --site site1.local install-app exotel_integration
-
-bench get-app waba_integration --resolve-deps
-bench --site site1.local install-app waba_integration
-
-bench get-app library_management --resolve-deps
-bench --site site1.local install-app library_management
-
-bench get-app healthcare --resolve-deps
-bench --site site1.local install-app healthcare
-
-bench get-app agriculture --resolve-deps
-bench --site site1.local install-app agriculture
-
-bench get-app hospitality --resolve-deps
-bench --site site1.local install-app hospitality
-
-bench get-app india-compliance --resolve-deps
-bench --site site1.local install-app india_compliance
-    
-    bench migrate
-    
-    bench start
-
-
+      bench migrate
+         
+      bench start
 
 ### Optional step for cratetind production setup
 
 ### Step 16 setup to production
 
-bench set-config -g developer_mode 0
-bench switch-to-master --upgrade
-bench clear-cache
-bench clear-website-cache
-bench setup supervisor
-bench setup production
-bench setup supervisor
-sudo supervisorctl reread
-sudo supervisorctl reload
-sudo supervisorctl restart all
-bench migrate
-bench restart
-
+      bench set-config -g developer_mode 0
+      bench switch-to-master --upgrade
+      bench clear-cache
+      bench clear-website-cache
+      bench setup supervisor
+      bench setup production
+      bench setup supervisor
+      sudo supervisorctl reread
+      sudo supervisorctl reload
+      sudo supervisorctl restart all
+      bench migrate
+      bench restart
 
 ## If you installed with --production option and you want to stop production services, and start in develop mode
 
@@ -279,49 +268,38 @@ bench restart
 
 ### Also if you need to set from production to develop
 
-cd /frappe-bench/sites/site1.local/site_config.json
-bench set-config -g developer_mode 1
-bench --site site1.local clear-cache
-bench setup requirements --dev
-sudo bench setup production site1.local-frappe
-bench migrate
-bench restart
+      cd /frappe-bench/sites/site1.local/site_config.json
+      bench set-config -g developer_mode 1
+      bench --site site1.local clear-cache
+      bench setup requirements --dev
+      sudo bench setup production site1.local-frappe
+      bench migrate
+      bench restart
 
 ###  To start in develop mode, you need to have Procfile in the frappe-bench directory.
 
       bench setup procfile
       
 ### To start develop server:   
+      
       bench start
 
 Open the 0.0.0.0 or server IP in web browser and login to production server
     
-   
   #### Port cofiguration for multiple site
     
-    
     Switch on/off DNS based multitenancy (once)
-
-      bench config dns_multitenant on/off
-
+    bench config dns_multitenant on/off
     Create a new site
-
-      bench new-site site2.local
-
+    bench new-site site2.local
     Set port (82)
-
-       bench set-nginx-port site2.local 82
-
+    bench set-nginx-port site2.local 82
     regenerate nginx config
-
-       bench setup nginx
-
+    bench setup nginx
     reload nginx
-
-      sudo service nginx reload
-      
+    sudo service nginx reload
     reload supervisor
-      sudo service supervisor restart
+    sudo service supervisor restart
           
 ### others
 
